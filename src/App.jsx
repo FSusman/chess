@@ -1,6 +1,46 @@
 import React, { useState } from "react";
+import { Piece } from "@chessire/pieces";
 
 const App = () => {
+
+  const initialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+
+  const parseFEN = (fen) => {
+    const rows = fen.split(" ")[0].split("/");
+    const board = [];
+
+    rows.forEach((row) => {
+      const boardRow = [];
+      for (let char of row) {
+        if (!isNaN(char)) {
+          for (let i = 0; i < parseInt(char); i++) {
+            boardRow.push(null);
+          }
+        } else {
+          boardRow.push(char);
+        }
+      }
+      board.push(boardRow);
+    });
+
+    return board;
+  };
+
+  const fenToPiece = (char) => {
+    const color = char === char.toUpperCase() ? "white" : "black";
+    const pieceMap = {
+      k: "K",
+      q: "Q",
+      r: "R",
+      b: "B",
+      n: "N",
+      p: "P",
+    };
+    const piece = pieceMap[char.toLowerCase()];
+    return <Piece color={color} piece={piece} width={64} />;
+  };
+
+  const [board, setBoard] = useState(parseFEN(initialFEN));
   const [redSquares, setRedSquares] = useState([]);
 
   const handleRightClick = (event, row, col) => {
@@ -21,15 +61,17 @@ const App = () => {
         ? "bg-red-600"
         : "bg-red-400"
       : isBlack
-      ? "bg-black"
-      : "bg-white";
+      ? "bg-green-600"
+      : "bg-gray-100";
     return (
       <div
         key={`${row}-${col}`}
         className={`${className} w-12 h-12`}
         onContextMenu={(event) => handleRightClick(event, row, col)}
         onClick={(e) => setRedSquares([])}
-      ></div>
+      >
+        {board[row][col] ? fenToPiece(board[row][col]) : null}
+      </div>
     );
   };
 
