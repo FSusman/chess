@@ -90,16 +90,16 @@ const App = () => {
       item: { piece, position },
     });
 
-    return collected.isDragging ? (
-      <div className="bg-red-200">{piece}</div>
-    ) : (
-      <div
-        ref={drag}
-        onDrag={(e) => (e.target.style.backgroundColor = "orange")}
-        {...collected}
-      >
-        {piece}
-      </div>
+    return (
+      <>
+        {collected.isDragging ? (
+          <div ref={preview} style={{ backgroundColor: "transparent" }} />
+        ) : (
+          <div ref={drag} className="cursor-grab">
+            {piece}
+          </div>
+        )}
+      </>
     );
   };
 
