@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 
 const App = () => {
+  const [redSquares, setRedSquares] = useState([]);
+
+  const handleRightClick = (event, row, col) => {
+    event.preventDefault();
+    const squareId = `${row}-${col}`;
+    if (redSquares.includes(squareId)) {
+      setRedSquares(redSquares.filter((id) => id !== squareId));
+    } else {
+      setRedSquares([...redSquares, squareId]);
+    }
+  };
+
   const renderSquare = (row, col) => {
     const isBlack = (row + col) % 2 === 1;
-    const className = isBlack ? "bg-black" : "bg-white";
+    const isRed = redSquares.includes(`${row}-${col}`);
+    let className = isRed
+      ? isBlack
+        ? "bg-red-600"
+        : "bg-red-400"
+      : isBlack
+      ? "bg-black"
+      : "bg-white";
     return (
-      <div key={`${row}-${col}`} className={`${className} w-12 h-12`}></div>
+      <div
+        key={`${row}-${col}`}
+        className={`${className} w-12 h-12`}
+        onContextMenu={(event) => handleRightClick(event, row, col)}
+        onClick={(e) => setRedSquares([])}
+      ></div>
     );
   };
 
