@@ -66,7 +66,7 @@ const App = () => {
     return (
       <div
         key={`${row}-${col}`}
-        className={`${className} w-12 h-12`}
+        className={`${className} w-12 h-12 items-center justify-center flex`}
         onContextMenu={(event) => handleRightClick(event, row, col)}
         onClick={(e) => setRedSquares([])}
       >
