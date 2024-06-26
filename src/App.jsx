@@ -85,20 +85,21 @@ const App = () => {
   };
 
   const DraggablePiece = ({ piece, position }) => {
-    const [, drag, preview] = useDrag({
+    const [collected, drag, preview] = useDrag({
       type: "PIECE",
       item: { piece, position },
     });
 
-    return (
-      <>
-        <div ref={drag} className="cursor-grab">
-          {piece}
-        </div>
-        <div ref={preview} style={{ display: "none" }}>
-          {piece}
-        </div>
-      </>
+    return collected.isDragging ? (
+      <div className="bg-red-200">{piece}</div>
+    ) : (
+      <div
+        ref={drag}
+        onDrag={(e) => (e.target.style.backgroundColor = "orange")}
+        {...collected}
+      >
+        {piece}
+      </div>
     );
   };
 
